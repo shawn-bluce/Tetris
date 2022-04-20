@@ -3,6 +3,7 @@ package graphics
 import (
 	"golang.org/x/image/colornames"
 	"image/color"
+	"math/rand"
 )
 
 type subBlock struct {
@@ -11,21 +12,25 @@ type subBlock struct {
 }
 
 type Block struct {
-	Name       string
-	BlockPartA subBlock
-	BlockPartB subBlock
-	BlockPartC subBlock
-	BlockPartD subBlock
-	Color      color.RGBA
+	Name      string
+	BlockList [4]subBlock
+	Color     color.RGBA
+}
+
+var colorList [9]color.RGBA = [9]color.RGBA{
+	colornames.Red, colornames.Yellow, colornames.Blue,
+	colornames.Tan, colornames.Cornflowerblue, colornames.Deeppink,
+	colornames.Peru, colornames.Orange, colornames.Blueviolet,
 }
 
 func GetSquareBlock() Block {
-	return Block{
-		Name:       "square",
-		BlockPartA: subBlock{125, 5},
-		BlockPartB: subBlock{155, 5},
-		BlockPartC: subBlock{125, 35},
-		BlockPartD: subBlock{155, 35},
-		Color:      colornames.Red,
+	block := Block{
+		Name:  "square",
+		Color: colorList[rand.Int()%9],
 	}
+	block.BlockList[0] = subBlock{125, 5}
+	block.BlockList[1] = subBlock{155, 5}
+	block.BlockList[2] = subBlock{125, 35}
+	block.BlockList[3] = subBlock{155, 35}
+	return block
 }

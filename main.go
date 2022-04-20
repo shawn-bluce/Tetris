@@ -5,12 +5,21 @@ import (
 	"Tetris/gameUI"
 	"github.com/hajimehoshi/ebiten/v2"
 	"log"
+	"time"
 )
 
 type Game struct{}
 
+var lastOperateTime int64 = 0
+
 func (g *Game) Update() error {
 	// 每个 tick 都会调用该函数
+	now := time.Now().UnixMicro()
+	if now > lastOperateTime+50000 {
+		gamePlay.GetGameInput()
+		lastOperateTime = now
+	}
+
 	return nil
 }
 
