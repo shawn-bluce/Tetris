@@ -17,7 +17,8 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	// 每一帧都会调用该函数
 	gameUI.DrawUI(screen)
-	gamePlay.DrawGame(screen)
+	gamePlay.GameMainFunction(screen)
+	gamePlay.DrawGameLive(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
