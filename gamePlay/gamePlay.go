@@ -101,6 +101,17 @@ func GameMainFunction(screen *ebiten.Image) {
 	}
 }
 
+func WaitRetry() {
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		fmt.Println("retry game")
+		CurrentBlock = generateNewBlock()
+		for index := range ExistsBlockList {
+			ExistsBlockList[index] = graphics.Block{}
+		}
+		GameStatus = "gaming"
+	}
+}
+
 func GetGameInput() {
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
 		fmt.Println("block rotate (not finish)")

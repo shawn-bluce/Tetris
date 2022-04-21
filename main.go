@@ -13,11 +13,19 @@ type Game struct{}
 func (g *Game) Update() error {
 	// call this function ever tick
 	now := time.Now().UnixMicro()
-	if now > gamePlay.LastOperateTime+gamePlay.MoveTimeInterval && gamePlay.GameStatus != "stop" {
-		gamePlay.GetGameInput()
-		gamePlay.LastOperateTime = now
+	if now > gamePlay.LastOperateTime+gamePlay.MoveTimeInterval {
+		if gamePlay.GameStatus == "stop" {
+			gamePlay.WaitRetry()
+			gamePlay.LastOperateTime = now
+		} else if gamePlay.GameStatus == "wait" {
+			// wait to start game
+			gamePlay.GameStatus = "gaming"
+			gamePlay.LastOperateTime = now
+		} else {
+			gamePlay.GetGameInput()
+			gamePlay.LastOperateTime = now
+		}
 	}
-
 	return nil
 }
 
