@@ -4,6 +4,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"golang.org/x/image/colornames"
+	_ "image/png"
 )
 
 func DrawUI(screen *ebiten.Image) {
@@ -27,4 +28,12 @@ func DrawUI(screen *ebiten.Image) {
 	ebitenutil.DrawLine(screen, 5, 5, 5, 605, frameColor)
 	ebitenutil.DrawLine(screen, 305, 5, 305, 605, frameColor)
 	ebitenutil.DrawLine(screen, 455, 5, 455, 605, frameColor)
+}
+
+func DrawGameOverUI(screen *ebiten.Image) {
+	file, _, err := ebitenutil.NewImageFromFile("media/gameover.png")
+	if err != nil {
+		return
+	}
+	screen.DrawImage(file, nil)
 }

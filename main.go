@@ -4,7 +4,6 @@ import (
 	"Tetris/gamePlay"
 	"Tetris/gameUI"
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"log"
 	"time"
 )
@@ -14,7 +13,7 @@ type Game struct{}
 func (g *Game) Update() error {
 	// call this function ever tick
 	now := time.Now().UnixMicro()
-	if now > gamePlay.LastOperateTime+gamePlay.MoveTimeInterval {
+	if now > gamePlay.LastOperateTime+gamePlay.MoveTimeInterval && gamePlay.GameStatus != "stop" {
 		gamePlay.GetGameInput()
 		gamePlay.LastOperateTime = now
 	}
@@ -25,7 +24,8 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	// call this function ever frame
 	if gamePlay.IsGameOver() {
-		ebitenutil.NewImageFromFile("media/gameover.png")
+		gameUI.DrawGameOverUI(screen)
+		gamePlay.GameStatus = "stop"
 		return
 	}
 	gameUI.DrawUI(screen)

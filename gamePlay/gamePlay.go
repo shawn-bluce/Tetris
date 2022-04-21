@@ -20,6 +20,7 @@ var LastMoveTime int64 = 0
 var LastOperateTime int64 = 0
 var OperateTimeInterval int64 = 500000
 var MoveTimeInterval int64 = 50000
+var GameStatus string = "wait"
 
 func drawBlock(screen *ebiten.Image, block graphics.Block) {
 
@@ -73,8 +74,8 @@ func cleanLines() {
 				for interBlockIndex := range ExistsBlockList {
 					for subBLockIndex := range ExistsBlockList[interBlockIndex].BlockList {
 						if int(ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Y) == lineNumberPositionY {
-							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].X = -10
-							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Y = -10
+							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].X = -100
+							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Y = -100
 						}
 					}
 				}
