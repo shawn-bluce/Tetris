@@ -69,3 +69,12 @@ func TouchBottomBlockOrWall() bool {
 
 	return false
 }
+
+func IsGameOver() bool {
+	for index := range CurrentBlock.BlockList {
+		if CurrentBlock.BlockList[index].Y == MinYPosition && TouchBottomBlockOrWall() {
+			return true
+		}
+	}
+	return false
+}

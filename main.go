@@ -4,27 +4,30 @@ import (
 	"Tetris/gamePlay"
 	"Tetris/gameUI"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"log"
 	"time"
 )
 
 type Game struct{}
 
-var lastOperateTime int64 = 0
-
 func (g *Game) Update() error {
-	// 每个 tick 都会调用该函数
+	// call this function ever tick
 	now := time.Now().UnixMicro()
-	if now > lastOperateTime+50000 {
+	if now > gamePlay.LastOperateTime+gamePlay.MoveTimeInterval {
 		gamePlay.GetGameInput()
-		lastOperateTime = now
+		gamePlay.LastOperateTime = now
 	}
 
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	// 每一帧都会调用该函数
+	// call this function ever frame
+	if gamePlay.IsGameOver() {
+		ebitenutil.NewImageFromFile("media/gameover.png")
+		return
+	}
 	gameUI.DrawUI(screen)
 	gamePlay.GameMainFunction(screen)
 	gamePlay.DrawGameLive(screen)

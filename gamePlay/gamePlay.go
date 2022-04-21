@@ -5,22 +5,28 @@ import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"golang.org/x/image/colornames"
 	"time"
 )
 
 var CurrentBlock graphics.Block
+var ExistsBlockList [1024]graphics.Block
 var BasicLength float64 = 30
 var MinXPosition float64 = 5
 var MaxXPosition float64 = 305
 var MinYPosition float64 = 5
 var MaxYPosition float64 = 605
-var ExistsBlockList [1024]graphics.Block
-var lastMoveTime int64 = 0
+var LastMoveTime int64 = 0
+var LastOperateTime int64 = 0
+var OperateTimeInterval int64 = 500000
+var MoveTimeInterval int64 = 50000
 
 func drawBlock(screen *ebiten.Image, block graphics.Block) {
 
 	for index := range block.BlockList {
-		ebitenutil.DrawRect(screen, block.BlockList[index].X, block.BlockList[index].Y, BasicLength, BasicLength, block.Color)
+		subBlock := block.BlockList[index]
+		ebitenutil.DrawRect(screen, subBlock.X-1, subBlock.Y, BasicLength+1, BasicLength+1, colornames.Black)
+		ebitenutil.DrawRect(screen, subBlock.X, subBlock.Y+1, BasicLength-1, BasicLength-1, block.Color)
 	}
 }
 
@@ -52,33 +58,62 @@ func DrawGameLive(screen *ebiten.Image) {
 	drawBlock(screen, CurrentBlock)
 }
 
+func cleanLines() {
+	for i := 0; i < 10; i++ {
+		lineNumberPositionY := int(MaxYPosition) - int(BasicLength)*i
+		count := 0
+		for blockIndex := range ExistsBlockList {
+			for subBLockIndex := range ExistsBlockList[blockIndex].BlockList {
+				if int(ExistsBlockList[blockIndex].BlockList[subBLockIndex].Y) == lineNumberPositionY {
+					count++
+				}
+			}
+
+			if count == 10 {
+				for interBlockIndex := range ExistsBlockList {
+					for subBLockIndex := range ExistsBlockList[interBlockIndex].BlockList {
+						if int(ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Y) == lineNumberPositionY {
+							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].X = -10
+							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Y = -10
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 func GameMainFunction(screen *ebiten.Image) {
 	if !TouchBottomBlockOrWall() {
 		now := time.Now().UnixMicro()
-		if now > lastMoveTime+500000 {
+		if now > LastMoveTime+OperateTimeInterval {
 			for index := range CurrentBlock.BlockList {
 				CurrentBlock.BlockList[index].Y += BasicLength
 			}
-			lastMoveTime = now
+			LastMoveTime = now
 		}
 	} else {
-		//fmt.Println("current block is bottom")
+		fmt.Println("current block is bottom")
 		addBlockToStack()
+		cleanLines()
 		CurrentBlock = generateNewBlock()
 	}
 }
 
 func GetGameInput() {
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
-		fmt.Println("do not done.")
+		fmt.Println("block rotate (not finish)")
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {
-		fmt.Println("do not done.")
+		fmt.Println("move down")
+		MoveDown()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		MoveToLeft()
+		fmt.Println("move left")
+		MoveLeft()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		MoveToRight()
+		fmt.Println("move right")
+		MoveRight()
 	}
 }
