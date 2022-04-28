@@ -26,8 +26,10 @@ func drawBlock(screen *ebiten.Image, block graphics.Block) {
 
 	for index := range block.BlockList {
 		subBlock := block.BlockList[index]
-		ebitenutil.DrawRect(screen, subBlock.X-1, subBlock.Y, BasicLength+1, BasicLength+1, colornames.Black)
-		ebitenutil.DrawRect(screen, subBlock.X, subBlock.Y+1, BasicLength-1, BasicLength-1, block.Color)
+		if subBlock.Exists {
+			ebitenutil.DrawRect(screen, subBlock.X-1, subBlock.Y, BasicLength+1, BasicLength+1, colornames.Black)
+			ebitenutil.DrawRect(screen, subBlock.X, subBlock.Y+1, BasicLength-1, BasicLength-1, block.Color)
+		}
 	}
 }
 
@@ -35,14 +37,12 @@ func addBlockToStack() {
 	for index := range ExistsBlockList {
 		if ExistsBlockList[index].Name == "" {
 			ExistsBlockList[index] = CurrentBlock
-			//fmt.Println("take current block append to ExistsBlockList")
 			break
 		}
 	}
 }
 
 func generateNewBlock() graphics.Block {
-	//fmt.Println("generate a new block to replace current block")
 	square := graphics.GetSquareBlock()
 	return square
 }
@@ -57,6 +57,35 @@ func DrawGameLive(screen *ebiten.Image) {
 
 	// 然后绘制当前操作的方块的位置
 	drawBlock(screen, CurrentBlock)
+}
+
+func moveLinesDown() {
+	var list = [20]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+
+	for index := range ExistsBlockList {
+		for subIndex := range ExistsBlockList[index].BlockList {
+			positionY := int(ExistsBlockList[index].BlockList[subIndex].Y-5) / 30
+			if positionY > 5 && ExistsBlockList[index].BlockList[subIndex].Exists {
+				list[positionY]++
+			}
+		}
+	}
+
+	for i := 0; i < 4; i++ {
+		for index := range list {
+			lineNumber := 19 - index
+			if list[lineNumber] == 10 {
+				for j := range ExistsBlockList {
+					for k := range ExistsBlockList[j].BlockList {
+						if int(ExistsBlockList[j].BlockList[k].Y) <= lineNumber*30+5 && ExistsBlockList[j].BlockList[k].Exists {
+							ExistsBlockList[j].BlockList[k].Y += BasicLength
+						}
+					}
+				}
+				break
+			}
+		}
+	}
 }
 
 func cleanLines() {
@@ -74,8 +103,7 @@ func cleanLines() {
 				for interBlockIndex := range ExistsBlockList {
 					for subBLockIndex := range ExistsBlockList[interBlockIndex].BlockList {
 						if int(ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Y) == lineNumberPositionY {
-							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].X = -100
-							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Y = -100
+							ExistsBlockList[interBlockIndex].BlockList[subBLockIndex].Exists = false
 						}
 					}
 				}
@@ -96,6 +124,7 @@ func GameMainFunction(screen *ebiten.Image) {
 	} else {
 		fmt.Println("current block is bottom")
 		addBlockToStack()
+		moveLinesDown()
 		cleanLines()
 		CurrentBlock = generateNewBlock()
 	}

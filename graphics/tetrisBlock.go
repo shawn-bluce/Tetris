@@ -7,8 +7,9 @@ import (
 )
 
 type subBlock struct {
-	X float64
-	Y float64
+	X      float64
+	Y      float64
+	Exists bool
 }
 
 type Block struct {
@@ -28,9 +29,9 @@ func GetSquareBlock() Block {
 		Name:  "square",
 		Color: colorList[rand.Int()%9],
 	}
-	block.BlockList[0] = subBlock{125, 5}
-	block.BlockList[1] = subBlock{155, 5}
-	block.BlockList[2] = subBlock{125, 35}
-	block.BlockList[3] = subBlock{155, 35}
+	block.BlockList[0] = subBlock{125, 5, true}
+	block.BlockList[1] = subBlock{155, 5, true}
+	block.BlockList[2] = subBlock{125, 35, true}
+	block.BlockList[3] = subBlock{155, 35, true}
 	return block
 }
