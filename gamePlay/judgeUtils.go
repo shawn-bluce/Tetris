@@ -5,76 +5,52 @@ import "fmt"
 // 不要看了，没用脑子写的
 
 func TouchLeftBlockOrWall() bool {
-	for index := range CurrentBlock.BlockList {
-		if CurrentBlock.BlockList[index].X <= MinXPosition {
+	for i := range CurrentBlock.BlockList {
+		block := CurrentBlock.BlockList[i]
+		x := int((block.X - 5) / 30)
+		y := int((block.Y - 5) / 30)
+		if x == 0 || ExistsBlockMap[x-1][y].Exists {
 			return true
-		}
-	}
-	for blockIndex := range ExistsBlockList {
-		for currentIndex := range CurrentBlock.BlockList {
-			currentSubBlock := CurrentBlock.BlockList[currentIndex]
-			judgeBlockList := ExistsBlockList[blockIndex].BlockList
-			for existsIndex := range judgeBlockList {
-				if currentSubBlock.X == judgeBlockList[existsIndex].X+BasicLength && currentSubBlock.Y == judgeBlockList[existsIndex].Y {
-					return true
-				}
-			}
 		}
 	}
 	return false
 }
 
 func TouchRightBlockOrWall() bool {
-	for index := range CurrentBlock.BlockList {
-		if CurrentBlock.BlockList[index].X >= MaxXPosition-BasicLength {
-			fmt.Println("touch the wall")
+	for i := range CurrentBlock.BlockList {
+		block := CurrentBlock.BlockList[i]
+		x := int((block.X - 5) / 30)
+		y := int((block.Y - 5) / 30)
+		if x == 9 || ExistsBlockMap[x+1][y].Exists {
 			return true
 		}
 	}
-	for blockIndex := range ExistsBlockList {
-		for currentIndex := range CurrentBlock.BlockList {
-			currentSubBlock := CurrentBlock.BlockList[currentIndex]
-			judgeBlockList := ExistsBlockList[blockIndex].BlockList
-			for existsIndex := range judgeBlockList {
-				if currentSubBlock.X == judgeBlockList[existsIndex].X-BasicLength && currentSubBlock.Y == judgeBlockList[existsIndex].Y {
-					fmt.Println("touch the block")
-					return true
-				}
-			}
-		}
-	}
-	fmt.Println("can move")
 	return false
 }
 
 func TouchBottomBlockOrWall() bool {
 
-	for index := range CurrentBlock.BlockList {
-		if CurrentBlock.BlockList[index].Y+BasicLength >= MaxYPosition {
+	for i := range ExistsBlockMap {
+		fmt.Println(i)
+	}
+
+	for i := range CurrentBlock.BlockList {
+		block := CurrentBlock.BlockList[i]
+		x := int((block.X - 5) / 30)
+		y := int((block.Y - 5) / 30)
+		// todo: 仍然有bug，是这里的判断出了问题
+		if y == 19 || ExistsBlockMap[x][y+1].Exists {
 			return true
 		}
 	}
-
-	for blockIndex := range ExistsBlockList {
-		for currentIndex := range CurrentBlock.BlockList {
-			currentSubBlock := CurrentBlock.BlockList[currentIndex]
-			judgeBlockList := ExistsBlockList[blockIndex].BlockList
-			for existsIndex := range judgeBlockList {
-				if currentSubBlock.X == judgeBlockList[existsIndex].X && currentSubBlock.Y+BasicLength >= judgeBlockList[existsIndex].Y {
-					return true
-				}
-			}
-		}
-	}
-
 	return false
 }
 
 func IsGameOver() bool {
-	for index := range CurrentBlock.BlockList {
-		if CurrentBlock.BlockList[index].Y == MinYPosition && TouchBottomBlockOrWall() {
-			return true
-		}
-	}
+	//for index := range CurrentBlock.BlockList {
+	//	if CurrentBlock.BlockList[index].Y == MinYPosition && TouchBottomBlockOrWall() {
+	//		return true
+	//	}
+	//}
 	return false
 }
