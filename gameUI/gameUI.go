@@ -8,7 +8,7 @@ import (
 )
 
 func DrawUI(screen *ebiten.Image) {
-	// debug ui
+	// gray grid
 	var x, y float64
 	x = 5
 	y = 5
@@ -21,7 +21,7 @@ func DrawUI(screen *ebiten.Image) {
 		y += 30
 	}
 
-	// 外面的几个框框
+	// game box
 	frameColor := colornames.Red
 	ebitenutil.DrawLine(screen, 5, 5, 455, 5, frameColor)
 	ebitenutil.DrawLine(screen, 5, 605, 455, 605, frameColor)

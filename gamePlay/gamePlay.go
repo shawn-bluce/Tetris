@@ -23,16 +23,15 @@ func addBlockToStack() {
 		block := CurrentBlock.BlockList[subBlockIndex]
 		x := int(block.X-5) / 30
 		y := int(block.Y-5) / 30
-		fmt.Println("add", x, y)
 		ExistsBlockMap[x][y].Exists = true
 		ExistsBlockMap[x][y].Color = block.Color
 	}
-	for y := 0; y < 20; y++ {
-		fmt.Println(
-			ExistsBlockMap[0][y].Exists, ExistsBlockMap[1][y].Exists, ExistsBlockMap[2][y].Exists, ExistsBlockMap[3][y].Exists, ExistsBlockMap[4][y].Exists,
-			ExistsBlockMap[5][y].Exists, ExistsBlockMap[6][y].Exists, ExistsBlockMap[7][y].Exists, ExistsBlockMap[8][y].Exists, ExistsBlockMap[9][y].Exists,
-		)
-	}
+	fmt.Println(fmt.Sprintf("add new sub block: (%d,%d), (%d,%d), (%d,%d), (%d,%d)",
+		int(CurrentBlock.BlockList[0].X-5)/30, int(CurrentBlock.BlockList[0].Y-5)/30,
+		int(CurrentBlock.BlockList[1].X-5)/30, int(CurrentBlock.BlockList[1].Y-5)/30,
+		int(CurrentBlock.BlockList[2].X-5)/30, int(CurrentBlock.BlockList[2].Y-5)/30,
+		int(CurrentBlock.BlockList[3].X-5)/30, int(CurrentBlock.BlockList[3].Y-5)/30,
+	))
 }
 
 func DrawGameLive(screen *ebiten.Image) {
@@ -54,12 +53,29 @@ func DrawGameLive(screen *ebiten.Image) {
 	}
 }
 
-func moveLinesDown() {
-
-}
-
 func cleanLines() {
+	for y := 19; y > 0; y-- { // from bottom to top
+		count := 0
+		for x := 0; x < 10; x++ {
+			if ExistsBlockMap[x][y].Exists {
+				count++
+			}
+		}
+		if count == 10 {
+			for x := 0; x < 10; x++ {
+				ExistsBlockMap[x][y].Exists = false
+			}
+			fmt.Println("clean row y=", y)
 
+			for subY := y; subY > 0; subY-- {
+				for x := 0; x < 10; x++ {
+					ExistsBlockMap[x][subY].Exists = ExistsBlockMap[x][subY-1].Exists
+					ExistsBlockMap[x][subY].Color = ExistsBlockMap[x][subY-1].Color
+				}
+			}
+			y++
+		}
+	}
 }
 
 func GameMainFunction(screen *ebiten.Image) {
@@ -78,7 +94,6 @@ func GameMainFunction(screen *ebiten.Image) {
 	} else {
 		fmt.Println("current block is bottom")
 		addBlockToStack()
-		moveLinesDown()
 		cleanLines()
 		CurrentBlock = graphics.Block{}
 		CurrentBlock.BlockList[0].Exists = false
