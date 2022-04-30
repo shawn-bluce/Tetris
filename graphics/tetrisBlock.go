@@ -18,17 +18,17 @@ type Block struct {
 	Color     color.RGBA
 }
 
-var colorList [9]color.RGBA = [9]color.RGBA{
-	colornames.Red, colornames.Yellow, colornames.Blue,
-	colornames.Tan, colornames.Cornflowerblue, colornames.Deeppink,
-	colornames.Peru, colornames.Orange, colornames.Blueviolet,
+var colorList [7]color.RGBA = [7]color.RGBA{
+	colornames.Lightyellow, colornames.Lightgreen, colornames.Lightblue, colornames.Lightgray,
+	colornames.Lightsalmon, colornames.Lightslategray, colornames.Lightpink,
 }
 
-var blockList [7]string = [7]string{"S", "Z", "RZ", "L", "RL", "T", "I"}
+var blockList [7]string = [7]string{"O", "Z", "RZ", "L", "RL", "T", "I"}
 
 func GenerateNewBlock() Block {
-	thisColor := colorList[rand.Int()%9]
-	thisBlockName := blockList[rand.Int()%7]
+	index := rand.Int() % 7
+	thisColor := colorList[index]
+	thisBlockName := blockList[index]
 	block := Block{
 		Color: thisColor,
 	}
@@ -36,7 +36,7 @@ func GenerateNewBlock() Block {
 	blockList := [4][2]float64{}
 
 	switch thisBlockName {
-	case "S":
+	case "O":
 		blockList[0] = [2]float64{0, 0}
 		blockList[1] = [2]float64{1, 0}
 		blockList[2] = [2]float64{0, 1}
