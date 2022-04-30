@@ -1,7 +1,5 @@
 package gamePlay
 
-import "fmt"
-
 // 不要看了，没用脑子写的
 
 func TouchLeftBlockOrWall() bool {
@@ -29,11 +27,6 @@ func TouchRightBlockOrWall() bool {
 }
 
 func TouchBottomBlockOrWall() bool {
-
-	for i := range ExistsBlockMap {
-		fmt.Println(i)
-	}
-
 	for i := range CurrentBlock.BlockList {
 		block := CurrentBlock.BlockList[i]
 		x := int((block.X - 5) / 30)

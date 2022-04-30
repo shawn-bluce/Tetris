@@ -12,51 +12,43 @@ import (
 var CurrentBlock graphics.Block
 var ExistsBlockMap [10][20]graphics.SubBlock
 var BasicLength float64 = 30
-var MinXPosition float64 = 5
-var MaxXPosition float64 = 305
-var MinYPosition float64 = 5
-var MaxYPosition float64 = 605
 var LastMoveTime int64 = 0
 var LastOperateTime int64 = 0
 var OperateTimeInterval int64 = 500000
 var MoveTimeInterval int64 = 50000
 var GameStatus string = "wait"
-var CurrentLastPositionX float64 = 0
-var CurrentLastPositionY float64 = 0
 
 func addBlockToStack() {
 	for subBlockIndex := range CurrentBlock.BlockList {
-		for i := range ExistsBlockMap {
-			for j := range ExistsBlockMap[i] {
-				if !ExistsBlockMap[i][j].Exists {
-					ExistsBlockMap[i][j].X = CurrentBlock.BlockList[subBlockIndex].X
-					ExistsBlockMap[i][j].Y = CurrentBlock.BlockList[subBlockIndex].Y
-					ExistsBlockMap[i][j].Exists = true
-					ExistsBlockMap[i][j].Color = CurrentBlock.Color
-				}
-			}
-		}
+		block := CurrentBlock.BlockList[subBlockIndex]
+		x := int(block.X-5) / 30
+		y := int(block.Y-5) / 30
+		fmt.Println("add", x, y)
+		ExistsBlockMap[x][y].Exists = true
+		ExistsBlockMap[x][y].Color = block.Color
+	}
+	for y := 0; y < 20; y++ {
+		fmt.Println(
+			ExistsBlockMap[0][y].Exists, ExistsBlockMap[1][y].Exists, ExistsBlockMap[2][y].Exists, ExistsBlockMap[3][y].Exists, ExistsBlockMap[4][y].Exists,
+			ExistsBlockMap[5][y].Exists, ExistsBlockMap[6][y].Exists, ExistsBlockMap[7][y].Exists, ExistsBlockMap[8][y].Exists, ExistsBlockMap[9][y].Exists,
+		)
 	}
 }
 
 func DrawGameLive(screen *ebiten.Image) {
-	for x := range ExistsBlockMap {
-		for y := range ExistsBlockMap[x] {
-			block := ExistsBlockMap[x][y]
-			if block.Exists {
-				ebitenutil.DrawRect(screen, block.X-1, block.Y, BasicLength+1, BasicLength+1, colornames.Black)
-				ebitenutil.DrawRect(screen, block.X, block.Y+1, BasicLength-1, BasicLength-1, block.Color)
+	for x := 0; x < 10; x++ {
+		for y := 0; y < 20; y++ {
+			if ExistsBlockMap[x][y].Exists {
+				positionX := float64(x*30 + 5)
+				positionY := float64(y*30 + 5)
+				ebitenutil.DrawRect(screen, positionX-1, positionY, BasicLength+1, BasicLength+1, colornames.Black)
+				ebitenutil.DrawRect(screen, positionX, positionY+1, BasicLength-1, BasicLength-1, ExistsBlockMap[x][y].Color)
 			}
 		}
 	}
 
 	for i := range CurrentBlock.BlockList {
 		block := CurrentBlock.BlockList[i]
-		if block.X != CurrentLastPositionX || block.Y != CurrentLastPositionY {
-			fmt.Println("current: (", block.X, ",", block.Y, ")")
-			CurrentLastPositionX = block.X
-			CurrentLastPositionY = block.Y
-		}
 		ebitenutil.DrawRect(screen, block.X-1, block.Y, BasicLength+1, BasicLength+1, colornames.Black)
 		ebitenutil.DrawRect(screen, block.X, block.Y+1, BasicLength-1, BasicLength-1, block.Color)
 	}
