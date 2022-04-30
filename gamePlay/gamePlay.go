@@ -2,7 +2,6 @@ package gamePlay
 
 import (
 	"Tetris/graphics"
-	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"golang.org/x/image/colornames"
@@ -26,12 +25,6 @@ func addBlockToStack() {
 		ExistsBlockMap[x][y].Exists = true
 		ExistsBlockMap[x][y].Color = block.Color
 	}
-	fmt.Println(fmt.Sprintf("add new sub block: (%d,%d), (%d,%d), (%d,%d), (%d,%d)",
-		int(CurrentBlock.BlockList[0].X-5)/30, int(CurrentBlock.BlockList[0].Y-5)/30,
-		int(CurrentBlock.BlockList[1].X-5)/30, int(CurrentBlock.BlockList[1].Y-5)/30,
-		int(CurrentBlock.BlockList[2].X-5)/30, int(CurrentBlock.BlockList[2].Y-5)/30,
-		int(CurrentBlock.BlockList[3].X-5)/30, int(CurrentBlock.BlockList[3].Y-5)/30,
-	))
 }
 
 func DrawGameLive(screen *ebiten.Image) {
@@ -65,7 +58,6 @@ func cleanLines() {
 			for x := 0; x < 10; x++ {
 				ExistsBlockMap[x][y].Exists = false
 			}
-			fmt.Println("clean row y=", y)
 
 			for subY := y; subY > 0; subY-- {
 				for x := 0; x < 10; x++ {
@@ -92,7 +84,6 @@ func GameMainFunction(screen *ebiten.Image) {
 			LastMoveTime = now
 		}
 	} else {
-		fmt.Println("current block is bottom")
 		addBlockToStack()
 		cleanLines()
 		CurrentBlock = graphics.Block{}
@@ -102,7 +93,6 @@ func GameMainFunction(screen *ebiten.Image) {
 
 func WaitRetry() {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
-		fmt.Println("retry game")
 		ExistsBlockMap = [10][20]graphics.SubBlock{}
 		GameStatus = "gaming"
 	}
