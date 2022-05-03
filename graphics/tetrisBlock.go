@@ -47,15 +47,15 @@ func GenerateNewBlock() Block {
 			allDirectionsList[i][3] = [2]float64{1, 1}
 		}
 	case "Z":
-		allDirectionsList[0][0] = [2]float64{0, 0}
-		allDirectionsList[0][1] = [2]float64{1, 0}
-		allDirectionsList[0][2] = [2]float64{1, 1}
-		allDirectionsList[0][3] = [2]float64{2, 1}
+		allDirectionsList[0][0] = [2]float64{1, 0}
+		allDirectionsList[0][1] = [2]float64{2, 0}
+		allDirectionsList[0][2] = [2]float64{0, -1}
+		allDirectionsList[0][3] = [2]float64{1, -1}
 
-		allDirectionsList[1][0] = [2]float64{1, 0}
-		allDirectionsList[1][1] = [2]float64{0, 1}
-		allDirectionsList[1][2] = [2]float64{1, 1}
-		allDirectionsList[1][3] = [2]float64{0, 2}
+		allDirectionsList[1][0] = [2]float64{-1, 0}
+		allDirectionsList[1][1] = [2]float64{0, -2}
+		allDirectionsList[1][2] = [2]float64{-1, -1}
+		allDirectionsList[1][3] = [2]float64{0, -1}
 
 		allDirectionsList[2][0] = allDirectionsList[0][0]
 		allDirectionsList[2][1] = allDirectionsList[0][1]
@@ -67,15 +67,15 @@ func GenerateNewBlock() Block {
 		allDirectionsList[3][2] = allDirectionsList[1][2]
 		allDirectionsList[3][3] = allDirectionsList[1][3]
 	case "RZ":
-		allDirectionsList[0][0] = [2]float64{1, 0}
-		allDirectionsList[0][1] = [2]float64{2, 0}
-		allDirectionsList[0][2] = [2]float64{0, 1}
-		allDirectionsList[0][3] = [2]float64{1, 1}
+		allDirectionsList[0][0] = [2]float64{0, 0}
+		allDirectionsList[0][1] = [2]float64{1, 0}
+		allDirectionsList[0][2] = [2]float64{1, -1}
+		allDirectionsList[0][3] = [2]float64{2, -1}
 
 		allDirectionsList[1][0] = [2]float64{0, 0}
 		allDirectionsList[1][1] = [2]float64{1, 0}
-		allDirectionsList[1][2] = [2]float64{1, 1}
-		allDirectionsList[1][3] = [2]float64{1, 2}
+		allDirectionsList[1][2] = [2]float64{0, -1}
+		allDirectionsList[1][3] = [2]float64{1, 1}
 
 		allDirectionsList[2][0] = allDirectionsList[0][0]
 		allDirectionsList[2][1] = allDirectionsList[0][1]
@@ -87,10 +87,10 @@ func GenerateNewBlock() Block {
 		allDirectionsList[3][2] = allDirectionsList[1][2]
 		allDirectionsList[3][3] = allDirectionsList[1][3]
 	case "L":
-		allDirectionsList[0][0] = [2]float64{0, 0}
-		allDirectionsList[0][1] = [2]float64{0, 1}
-		allDirectionsList[0][2] = [2]float64{0, 2}
-		allDirectionsList[0][3] = [2]float64{1, 2}
+		allDirectionsList[0][0] = [2]float64{-1, -1}
+		allDirectionsList[0][1] = [2]float64{-1, 0}
+		allDirectionsList[0][2] = [2]float64{-1, 1}
+		allDirectionsList[0][3] = [2]float64{0, 1}
 
 		allDirectionsList[1][0] = [2]float64{0, 0}
 		allDirectionsList[1][1] = [2]float64{1, 0}
@@ -102,20 +102,20 @@ func GenerateNewBlock() Block {
 		allDirectionsList[2][2] = [2]float64{1, 1}
 		allDirectionsList[2][3] = [2]float64{1, 2}
 
-		allDirectionsList[3][0] = [2]float64{2, 0}
-		allDirectionsList[3][1] = [2]float64{0, 1}
-		allDirectionsList[3][2] = [2]float64{1, 1}
-		allDirectionsList[3][3] = [2]float64{2, 1}
+		allDirectionsList[3][0] = [2]float64{1, 1}
+		allDirectionsList[3][1] = [2]float64{-1, 2}
+		allDirectionsList[3][2] = [2]float64{0, 2}
+		allDirectionsList[3][3] = [2]float64{1, 2}
 	case "RL":
 		allDirectionsList[0][0] = [2]float64{1, 0}
 		allDirectionsList[0][1] = [2]float64{1, 1}
 		allDirectionsList[0][2] = [2]float64{1, 2}
 		allDirectionsList[0][3] = [2]float64{0, 2}
 
-		allDirectionsList[1][0] = [2]float64{0, 0}
-		allDirectionsList[1][1] = [2]float64{0, 1}
-		allDirectionsList[1][2] = [2]float64{1, 1}
-		allDirectionsList[1][3] = [2]float64{2, 1}
+		allDirectionsList[1][0] = [2]float64{-1, 0}
+		allDirectionsList[1][1] = [2]float64{-1, 1}
+		allDirectionsList[1][2] = [2]float64{0, 1}
+		allDirectionsList[1][3] = [2]float64{1, 1}
 
 		allDirectionsList[2][0] = [2]float64{0, 0}
 		allDirectionsList[2][1] = [2]float64{1, 0}
@@ -127,45 +127,45 @@ func GenerateNewBlock() Block {
 		allDirectionsList[3][2] = [2]float64{2, 0}
 		allDirectionsList[3][3] = [2]float64{2, 1}
 	case "T":
-		allDirectionsList[0][0] = [2]float64{1, 0}
-		allDirectionsList[0][1] = [2]float64{0, 1}
-		allDirectionsList[0][2] = [2]float64{1, 1}
-		allDirectionsList[0][3] = [2]float64{2, 1}
+		allDirectionsList[0][0] = [2]float64{0, 0}
+		allDirectionsList[0][1] = [2]float64{-1, 0}
+		allDirectionsList[0][2] = [2]float64{0, -1}
+		allDirectionsList[0][3] = [2]float64{1, 0}
 
-		allDirectionsList[1][0] = [2]float64{1, 0}
-		allDirectionsList[1][1] = [2]float64{1, 1}
-		allDirectionsList[1][2] = [2]float64{2, 1}
-		allDirectionsList[1][3] = [2]float64{1, 2}
+		allDirectionsList[1][0] = [2]float64{0, 0}
+		allDirectionsList[1][1] = [2]float64{0, 1}
+		allDirectionsList[1][2] = [2]float64{0, -1}
+		allDirectionsList[1][3] = [2]float64{1, 0}
+
+		allDirectionsList[2][0] = [2]float64{0, 0}
+		allDirectionsList[2][1] = [2]float64{0, 1}
+		allDirectionsList[2][2] = [2]float64{-1, 0}
+		allDirectionsList[2][3] = [2]float64{1, 0}
+
+		allDirectionsList[3][0] = [2]float64{0, 0}
+		allDirectionsList[3][1] = [2]float64{0, 1}
+		allDirectionsList[3][2] = [2]float64{-1, 0}
+		allDirectionsList[3][3] = [2]float64{0, -1}
+	case "I":
+		allDirectionsList[0][0] = [2]float64{0, 0}
+		allDirectionsList[0][1] = [2]float64{-1, 0}
+		allDirectionsList[0][2] = [2]float64{1, 0}
+		allDirectionsList[0][3] = [2]float64{2, 0}
+
+		allDirectionsList[1][0] = [2]float64{0, 0}
+		allDirectionsList[1][1] = [2]float64{0, -1}
+		allDirectionsList[1][2] = [2]float64{0, 1}
+		allDirectionsList[1][3] = [2]float64{0, 2}
 
 		allDirectionsList[2][0] = [2]float64{0, 0}
 		allDirectionsList[2][1] = [2]float64{1, 0}
-		allDirectionsList[2][2] = [2]float64{2, 0}
-		allDirectionsList[2][3] = [2]float64{1, 1}
+		allDirectionsList[2][2] = [2]float64{-1, 0}
+		allDirectionsList[2][3] = [2]float64{2, 0}
 
-		allDirectionsList[3][0] = [2]float64{1, 0}
+		allDirectionsList[3][0] = [2]float64{0, 0}
 		allDirectionsList[3][1] = [2]float64{0, 1}
-		allDirectionsList[3][2] = [2]float64{1, 1}
-		allDirectionsList[3][3] = [2]float64{1, 2}
-	case "I":
-		allDirectionsList[0][0] = [2]float64{0, 0}
-		allDirectionsList[0][1] = [2]float64{1, 0}
-		allDirectionsList[0][2] = [2]float64{2, 0}
-		allDirectionsList[0][3] = [2]float64{3, 0}
-
-		allDirectionsList[1][0] = [2]float64{1, 0}
-		allDirectionsList[1][1] = [2]float64{1, 1}
-		allDirectionsList[1][2] = [2]float64{1, 2}
-		allDirectionsList[1][3] = [2]float64{1, 3}
-
-		allDirectionsList[2][0] = allDirectionsList[0][0]
-		allDirectionsList[2][1] = allDirectionsList[0][1]
-		allDirectionsList[2][2] = allDirectionsList[0][2]
-		allDirectionsList[2][3] = allDirectionsList[0][3]
-
-		allDirectionsList[3][0] = allDirectionsList[1][0]
-		allDirectionsList[3][1] = allDirectionsList[1][1]
-		allDirectionsList[3][2] = allDirectionsList[1][2]
-		allDirectionsList[3][3] = allDirectionsList[1][3]
+		allDirectionsList[3][2] = [2]float64{0, -1}
+		allDirectionsList[3][3] = [2]float64{0, 2}
 	}
 
 	block.AllDirectionsList = allDirectionsList

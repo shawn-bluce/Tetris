@@ -13,7 +13,7 @@ var ExistsBlockMap [10][20]graphics.SubBlock
 var BasicLength float64 = 30
 var LastMoveTime int64 = 0
 var LastOperateTime int64 = 0
-var OperateTimeInterval int64 = 50000
+var OperateTimeInterval int64 = 100000
 var MoveTimeInterval int64 = 500000
 var GameStatus string = "wait"
 
