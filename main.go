@@ -13,7 +13,7 @@ type Game struct{}
 func (g *Game) Update() error {
 	// call this function ever tick
 	now := time.Now().UnixMicro()
-	if now > gamePlay.LastOperateTime+gamePlay.MoveTimeInterval {
+	if now > gamePlay.LastOperateTime+gamePlay.OperateTimeInterval {
 		if gamePlay.GameStatus == "stop" {
 			gamePlay.WaitRetry()
 			gamePlay.LastOperateTime = now

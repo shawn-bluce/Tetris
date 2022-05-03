@@ -14,8 +14,10 @@ type SubBlock struct {
 }
 
 type Block struct {
-	BlockList [4]SubBlock
-	Color     color.RGBA
+	BlockList         [4]SubBlock
+	Color             color.RGBA
+	AllDirectionsList [4][4][2]float64
+	DirectionId       int
 }
 
 var colorList [7]color.RGBA = [7]color.RGBA{
@@ -32,50 +34,144 @@ func GenerateNewBlock() Block {
 	block := Block{
 		Color: thisColor,
 	}
+	block.DirectionId = rand.Int() % 4
 
-	blockList := [4][2]float64{}
+	allDirectionsList := [4][4][2]float64{}
 
 	switch thisBlockName {
 	case "O":
-		blockList[0] = [2]float64{0, 0}
-		blockList[1] = [2]float64{1, 0}
-		blockList[2] = [2]float64{0, 1}
-		blockList[3] = [2]float64{1, 1}
+		for i := 0; i < 4; i++ {
+			allDirectionsList[i][0] = [2]float64{0, 0}
+			allDirectionsList[i][1] = [2]float64{1, 0}
+			allDirectionsList[i][2] = [2]float64{0, 1}
+			allDirectionsList[i][3] = [2]float64{1, 1}
+		}
 	case "Z":
-		blockList[0] = [2]float64{0, 0}
-		blockList[1] = [2]float64{1, 0}
-		blockList[2] = [2]float64{1, 1}
-		blockList[3] = [2]float64{2, 1}
+		allDirectionsList[0][0] = [2]float64{0, 0}
+		allDirectionsList[0][1] = [2]float64{1, 0}
+		allDirectionsList[0][2] = [2]float64{1, 1}
+		allDirectionsList[0][3] = [2]float64{2, 1}
+
+		allDirectionsList[1][0] = [2]float64{1, 0}
+		allDirectionsList[1][1] = [2]float64{0, 1}
+		allDirectionsList[1][2] = [2]float64{1, 1}
+		allDirectionsList[1][3] = [2]float64{0, 2}
+
+		allDirectionsList[2][0] = allDirectionsList[0][0]
+		allDirectionsList[2][1] = allDirectionsList[0][1]
+		allDirectionsList[2][2] = allDirectionsList[0][2]
+		allDirectionsList[2][3] = allDirectionsList[0][3]
+
+		allDirectionsList[3][0] = allDirectionsList[1][0]
+		allDirectionsList[3][1] = allDirectionsList[1][1]
+		allDirectionsList[3][2] = allDirectionsList[1][2]
+		allDirectionsList[3][3] = allDirectionsList[1][3]
 	case "RZ":
-		blockList[0] = [2]float64{1, 0}
-		blockList[1] = [2]float64{2, 0}
-		blockList[2] = [2]float64{0, 1}
-		blockList[3] = [2]float64{1, 1}
+		allDirectionsList[0][0] = [2]float64{1, 0}
+		allDirectionsList[0][1] = [2]float64{2, 0}
+		allDirectionsList[0][2] = [2]float64{0, 1}
+		allDirectionsList[0][3] = [2]float64{1, 1}
+
+		allDirectionsList[1][0] = [2]float64{0, 0}
+		allDirectionsList[1][1] = [2]float64{1, 0}
+		allDirectionsList[1][2] = [2]float64{1, 1}
+		allDirectionsList[1][3] = [2]float64{1, 2}
+
+		allDirectionsList[2][0] = allDirectionsList[0][0]
+		allDirectionsList[2][1] = allDirectionsList[0][1]
+		allDirectionsList[2][2] = allDirectionsList[0][2]
+		allDirectionsList[2][3] = allDirectionsList[0][3]
+
+		allDirectionsList[3][0] = allDirectionsList[1][0]
+		allDirectionsList[3][1] = allDirectionsList[1][1]
+		allDirectionsList[3][2] = allDirectionsList[1][2]
+		allDirectionsList[3][3] = allDirectionsList[1][3]
 	case "L":
-		blockList[0] = [2]float64{0, 0}
-		blockList[1] = [2]float64{0, 1}
-		blockList[2] = [2]float64{0, 2}
-		blockList[3] = [2]float64{1, 2}
+		allDirectionsList[0][0] = [2]float64{0, 0}
+		allDirectionsList[0][1] = [2]float64{0, 1}
+		allDirectionsList[0][2] = [2]float64{0, 2}
+		allDirectionsList[0][3] = [2]float64{1, 2}
+
+		allDirectionsList[1][0] = [2]float64{0, 0}
+		allDirectionsList[1][1] = [2]float64{1, 0}
+		allDirectionsList[1][2] = [2]float64{2, 0}
+		allDirectionsList[1][3] = [2]float64{0, 1}
+
+		allDirectionsList[2][0] = [2]float64{0, 0}
+		allDirectionsList[2][1] = [2]float64{1, 0}
+		allDirectionsList[2][2] = [2]float64{1, 1}
+		allDirectionsList[2][3] = [2]float64{1, 2}
+
+		allDirectionsList[3][0] = [2]float64{2, 0}
+		allDirectionsList[3][1] = [2]float64{0, 1}
+		allDirectionsList[3][2] = [2]float64{1, 1}
+		allDirectionsList[3][3] = [2]float64{2, 1}
 	case "RL":
-		blockList[0] = [2]float64{1, 0}
-		blockList[1] = [2]float64{1, 1}
-		blockList[2] = [2]float64{2, 0}
-		blockList[3] = [2]float64{2, 1}
+		allDirectionsList[0][0] = [2]float64{1, 0}
+		allDirectionsList[0][1] = [2]float64{1, 1}
+		allDirectionsList[0][2] = [2]float64{1, 2}
+		allDirectionsList[0][3] = [2]float64{0, 2}
+
+		allDirectionsList[1][0] = [2]float64{0, 0}
+		allDirectionsList[1][1] = [2]float64{0, 1}
+		allDirectionsList[1][2] = [2]float64{1, 1}
+		allDirectionsList[1][3] = [2]float64{2, 1}
+
+		allDirectionsList[2][0] = [2]float64{0, 0}
+		allDirectionsList[2][1] = [2]float64{1, 0}
+		allDirectionsList[2][2] = [2]float64{0, 1}
+		allDirectionsList[2][3] = [2]float64{0, 2}
+
+		allDirectionsList[3][0] = [2]float64{0, 0}
+		allDirectionsList[3][1] = [2]float64{1, 0}
+		allDirectionsList[3][2] = [2]float64{2, 0}
+		allDirectionsList[3][3] = [2]float64{2, 1}
 	case "T":
-		blockList[0] = [2]float64{1, 0}
-		blockList[1] = [2]float64{0, 1}
-		blockList[2] = [2]float64{1, 1}
-		blockList[3] = [2]float64{2, 1}
+		allDirectionsList[0][0] = [2]float64{1, 0}
+		allDirectionsList[0][1] = [2]float64{0, 1}
+		allDirectionsList[0][2] = [2]float64{1, 1}
+		allDirectionsList[0][3] = [2]float64{2, 1}
+
+		allDirectionsList[1][0] = [2]float64{1, 0}
+		allDirectionsList[1][1] = [2]float64{1, 1}
+		allDirectionsList[1][2] = [2]float64{2, 1}
+		allDirectionsList[1][3] = [2]float64{1, 2}
+
+		allDirectionsList[2][0] = [2]float64{0, 0}
+		allDirectionsList[2][1] = [2]float64{1, 0}
+		allDirectionsList[2][2] = [2]float64{2, 0}
+		allDirectionsList[2][3] = [2]float64{1, 1}
+
+		allDirectionsList[3][0] = [2]float64{1, 0}
+		allDirectionsList[3][1] = [2]float64{0, 1}
+		allDirectionsList[3][2] = [2]float64{1, 1}
+		allDirectionsList[3][3] = [2]float64{1, 2}
 	case "I":
-		blockList[0] = [2]float64{0, 0}
-		blockList[1] = [2]float64{1, 0}
-		blockList[2] = [2]float64{2, 0}
-		blockList[3] = [2]float64{3, 0}
+		allDirectionsList[0][0] = [2]float64{0, 0}
+		allDirectionsList[0][1] = [2]float64{1, 0}
+		allDirectionsList[0][2] = [2]float64{2, 0}
+		allDirectionsList[0][3] = [2]float64{3, 0}
+
+		allDirectionsList[1][0] = [2]float64{1, 0}
+		allDirectionsList[1][1] = [2]float64{1, 1}
+		allDirectionsList[1][2] = [2]float64{1, 2}
+		allDirectionsList[1][3] = [2]float64{1, 3}
+
+		allDirectionsList[2][0] = allDirectionsList[0][0]
+		allDirectionsList[2][1] = allDirectionsList[0][1]
+		allDirectionsList[2][2] = allDirectionsList[0][2]
+		allDirectionsList[2][3] = allDirectionsList[0][3]
+
+		allDirectionsList[3][0] = allDirectionsList[1][0]
+		allDirectionsList[3][1] = allDirectionsList[1][1]
+		allDirectionsList[3][2] = allDirectionsList[1][2]
+		allDirectionsList[3][3] = allDirectionsList[1][3]
 	}
 
-	block.BlockList[0] = SubBlock{(blockList[0][0]+4)*30 + 5, blockList[0][1]*30 + 5, true, thisColor}
-	block.BlockList[1] = SubBlock{(blockList[1][0]+4)*30 + 5, blockList[1][1]*30 + 5, true, thisColor}
-	block.BlockList[2] = SubBlock{(blockList[2][0]+4)*30 + 5, blockList[2][1]*30 + 5, true, thisColor}
-	block.BlockList[3] = SubBlock{(blockList[3][0]+4)*30 + 5, blockList[3][1]*30 + 5, true, thisColor}
+	block.AllDirectionsList = allDirectionsList
+	block.BlockList[0] = SubBlock{(block.AllDirectionsList[block.DirectionId][0][0]+4)*30 + 5, block.AllDirectionsList[block.DirectionId][0][1]*30 + 5, true, thisColor}
+	block.BlockList[1] = SubBlock{(block.AllDirectionsList[block.DirectionId][1][0]+4)*30 + 5, block.AllDirectionsList[block.DirectionId][1][1]*30 + 5, true, thisColor}
+	block.BlockList[2] = SubBlock{(block.AllDirectionsList[block.DirectionId][2][0]+4)*30 + 5, block.AllDirectionsList[block.DirectionId][2][1]*30 + 5, true, thisColor}
+	block.BlockList[3] = SubBlock{(block.AllDirectionsList[block.DirectionId][3][0]+4)*30 + 5, block.AllDirectionsList[block.DirectionId][3][1]*30 + 5, true, thisColor}
 	return block
 }

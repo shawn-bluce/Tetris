@@ -13,8 +13,8 @@ var ExistsBlockMap [10][20]graphics.SubBlock
 var BasicLength float64 = 30
 var LastMoveTime int64 = 0
 var LastOperateTime int64 = 0
-var OperateTimeInterval int64 = 500000
-var MoveTimeInterval int64 = 50000
+var OperateTimeInterval int64 = 50000
+var MoveTimeInterval int64 = 500000
 var GameStatus string = "wait"
 
 func addBlockToStack() {
@@ -77,7 +77,7 @@ func GameMainFunction(screen *ebiten.Image) {
 
 	if !TouchBottomBlockOrWall() {
 		now := time.Now().UnixMicro()
-		if now > LastMoveTime+OperateTimeInterval {
+		if now > LastMoveTime+MoveTimeInterval {
 			for index := range CurrentBlock.BlockList {
 				CurrentBlock.BlockList[index].Y += BasicLength
 			}
@@ -100,7 +100,7 @@ func WaitRetry() {
 
 func GetGameInput() {
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
-
+		RotateBlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {
 		MoveDown()
