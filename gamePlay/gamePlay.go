@@ -9,12 +9,13 @@ import (
 )
 
 var CurrentBlock graphics.Block
+var NextBlock graphics.Block
 var ExistsBlockMap [10][20]graphics.SubBlock
 var BasicLength float64 = 30
 var LastMoveTime int64 = 0
 var LastOperateTime int64 = 0
 var OperateTimeInterval int64 = 100000
-var MoveTimeInterval int64 = 5000
+var MoveTimeInterval int64 = 5000 * 20
 var GameStatus string = "wait"
 
 func addBlockToStack() {
@@ -46,6 +47,11 @@ func DrawGameLive(screen *ebiten.Image) {
 		ebitenutil.DrawRect(screen, block.X-1, block.Y, BasicLength+1, BasicLength+1, colornames.Black)
 		ebitenutil.DrawRect(screen, block.X, block.Y+1, BasicLength-1, BasicLength-1, block.Color)
 	}
+
+	for i := range NextBlock.BlockList {
+		block := NextBlock.BlockList[i]
+		ebitenutil.DrawRect(screen, block.X+226, block.Y+61, BasicLength-1, BasicLength-1, block.Color)
+	}
 }
 
 func cleanLines() {
@@ -75,7 +81,8 @@ func cleanLines() {
 
 func GameMainFunction(screen *ebiten.Image) {
 	if !CurrentBlock.BlockList[0].Exists {
-		CurrentBlock = graphics.GenerateNewBlock()
+		CurrentBlock = NextBlock
+		NextBlock = graphics.GenerateNewBlock()
 	}
 
 	if !TouchBottomBlockOrWall() {
