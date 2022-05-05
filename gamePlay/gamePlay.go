@@ -14,7 +14,7 @@ var BasicLength float64 = 30
 var LastMoveTime int64 = 0
 var LastOperateTime int64 = 0
 var OperateTimeInterval int64 = 100000
-var MoveTimeInterval int64 = 500000
+var MoveTimeInterval int64 = 5000
 var GameStatus string = "wait"
 
 func addBlockToStack() {
@@ -22,8 +22,10 @@ func addBlockToStack() {
 		block := CurrentBlock.BlockList[subBlockIndex]
 		x := int(block.X-5) / 30
 		y := int(block.Y-5) / 30
-		ExistsBlockMap[x][y].Exists = true
-		ExistsBlockMap[x][y].Color = block.Color
+		if 0 <= x && x <= 9 && 0 <= y && y <= 19 {
+			ExistsBlockMap[x][y].Exists = true
+			ExistsBlockMap[x][y].Color = block.Color
+		}
 	}
 }
 
@@ -54,7 +56,8 @@ func cleanLines() {
 				count++
 			}
 		}
-		if count == 10 {
+
+		if count == 10 { // line need clean
 			for x := 0; x < 10; x++ {
 				ExistsBlockMap[x][y].Exists = false
 			}
@@ -65,7 +68,7 @@ func cleanLines() {
 					ExistsBlockMap[x][subY].Color = ExistsBlockMap[x][subY-1].Color
 				}
 			}
-			y++
+			y++ // move down, retry
 		}
 	}
 }
@@ -87,13 +90,25 @@ func GameMainFunction(screen *ebiten.Image) {
 		addBlockToStack()
 		cleanLines()
 		CurrentBlock = graphics.Block{}
-		CurrentBlock.BlockList[0].Exists = false
+		for i := 0; i < 4; i++ {
+			CurrentBlock.BlockList[i].Exists = false
+			CurrentBlock.BlockList[i].X = -10
+			CurrentBlock.BlockList[i].Y = -10
+		}
 	}
 }
 
-func WaitRetry() {
+func WaitStart() {
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		ExistsBlockMap = [10][20]graphics.SubBlock{}
+		for i := 0; i < 10; i++ {
+			for j := 0; j < 20; j++ {
+				ExistsBlockMap[i][j].Exists = false
+				ExistsBlockMap[i][j].X = -10
+				ExistsBlockMap[i][j].Y = -10
+				ExistsBlockMap[i][j].Color = colornames.Black
+			}
+		}
 		GameStatus = "gaming"
 	}
 }

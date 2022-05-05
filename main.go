@@ -15,10 +15,9 @@ func (g *Game) Update() error {
 	now := time.Now().UnixMicro()
 	if now > gamePlay.LastOperateTime+gamePlay.OperateTimeInterval {
 		if gamePlay.GameStatus == "stop" {
-			gamePlay.WaitRetry()
+			gamePlay.WaitStart()
 			gamePlay.LastOperateTime = now
 		} else if gamePlay.GameStatus == "wait" {
-			// wait to start game
 			gamePlay.GameStatus = "gaming"
 			gamePlay.LastOperateTime = now
 		} else {
@@ -47,7 +46,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	ebiten.SetWindowSize(530, 620)
-	ebiten.SetWindowTitle("Hello, World!")
+	ebiten.SetWindowTitle("Tetris")
 	if err := ebiten.RunGame(&Game{}); err != nil {
 		log.Fatal(err)
 	}
