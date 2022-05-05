@@ -12,10 +12,10 @@ var CurrentBlock graphics.Block
 var NextBlock graphics.Block
 var ExistsBlockMap [10][20]graphics.SubBlock
 var BasicLength float64 = 30
-var LastMoveTime int64 = 0
+var LastMoveTime float64 = 0
 var LastOperateTime int64 = 0
 var OperateTimeInterval int64 = 100000
-var MoveTimeInterval int64 = 5000 * 20
+var MoveTimeInterval float64 = 200000
 var GameStatus string = "wait"
 
 func addBlockToStack() {
@@ -72,7 +72,9 @@ func cleanLines() {
 				for x := 0; x < 10; x++ {
 					ExistsBlockMap[x][subY].Exists = ExistsBlockMap[x][subY-1].Exists
 					ExistsBlockMap[x][subY].Color = ExistsBlockMap[x][subY-1].Color
+
 				}
+				MoveTimeInterval *= 0.99
 			}
 			y++ // move down, retry
 		}
@@ -86,7 +88,7 @@ func GameMainFunction(screen *ebiten.Image) {
 	}
 
 	if !TouchBottomBlockOrWall() {
-		now := time.Now().UnixMicro()
+		now := float64(time.Now().UnixMicro())
 		if now > LastMoveTime+MoveTimeInterval {
 			for index := range CurrentBlock.BlockList {
 				CurrentBlock.BlockList[index].Y += BasicLength
