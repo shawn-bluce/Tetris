@@ -4,6 +4,9 @@ import (
 	"Tetris/gamePlay"
 	"Tetris/gameUI"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 	"log"
 	"time"
 )
@@ -47,6 +50,11 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	ebiten.SetWindowSize(530, 620)
 	ebiten.SetWindowTitle("Tetris")
+
+	// init font
+	tt, _ := opentype.Parse(fonts.MPlus1pRegular_ttf)
+	gamePlay.SelfFont, _ = opentype.NewFace(tt, &opentype.FaceOptions{Size: 35, DPI: 72, Hinting: font.HintingFull})
+
 	if err := ebiten.RunGame(&Game{}); err != nil {
 		log.Fatal(err)
 	}

@@ -1,8 +1,11 @@
 package gameUI
 
 import (
+	"Tetris/gamePlay"
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"golang.org/x/image/colornames"
 	_ "image/png"
 )
@@ -31,9 +34,8 @@ func DrawUI(screen *ebiten.Image) {
 }
 
 func DrawGameOverUI(screen *ebiten.Image) {
-	file, _, err := ebitenutil.NewImageFromFile("media/gameover.png")
-	if err != nil {
-		return
-	}
-	screen.DrawImage(file, nil)
+	score := fmt.Sprintf("Your score: %d", gamePlay.Score)
+	text.Draw(screen, "GAME", gamePlay.SelfFont, 210, 250, colornames.Red)
+	text.Draw(screen, "OVER", gamePlay.SelfFont, 210, 300, colornames.Red)
+	text.Draw(screen, score, gamePlay.SelfFont, 130, 350, colornames.Red)
 }

@@ -2,9 +2,12 @@ package gamePlay
 
 import (
 	"Tetris/graphics"
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"golang.org/x/image/colornames"
+	"golang.org/x/image/font"
 	"time"
 )
 
@@ -15,8 +18,10 @@ var BasicLength float64 = 30
 var LastMoveTime float64 = 0
 var LastOperateTime int64 = 0
 var OperateTimeInterval int64 = 100000
-var MoveTimeInterval float64 = 200000
+var MoveTimeInterval float64 = 1000000
 var GameStatus string = "wait"
+var Score int64 = 0
+var SelfFont font.Face
 
 func addBlockToStack() {
 	for subBlockIndex := range CurrentBlock.BlockList {
@@ -48,13 +53,21 @@ func DrawGameLive(screen *ebiten.Image) {
 		ebitenutil.DrawRect(screen, block.X, block.Y+1, BasicLength-1, BasicLength-1, block.Color)
 	}
 
+	// draw next block tips
 	for i := range NextBlock.BlockList {
 		block := NextBlock.BlockList[i]
 		ebitenutil.DrawRect(screen, block.X+226, block.Y+61, BasicLength-1, BasicLength-1, block.Color)
 	}
+
+	ebitenutil.DebugPrintAt(screen, fmt.Sprintf("FPS: %2.2f, TPS: %2.2f", ebiten.CurrentFPS(), ebiten.CurrentTPS()), 10, 10)
+	scoreString := fmt.Sprintf("%d", Score)
+
+	// print score
+	text.Draw(screen, scoreString, SelfFont, 350, 200, colornames.Red)
 }
 
 func cleanLines() {
+	cleanCount := 0
 	for y := 19; y > 0; y-- { // from bottom to top
 		count := 0
 		for x := 0; x < 10; x++ {
@@ -74,10 +87,22 @@ func cleanLines() {
 					ExistsBlockMap[x][subY].Color = ExistsBlockMap[x][subY-1].Color
 
 				}
-				MoveTimeInterval *= 0.99
 			}
+			MoveTimeInterval *= 0.99
+			cleanCount++
 			y++ // move down, retry
 		}
+	}
+	fmt.Println(cleanCount)
+	switch cleanCount {
+	case 1:
+		Score += 100
+	case 2:
+		Score += 220
+	case 3:
+		Score += 350
+	case 4:
+		Score += 500
 	}
 }
 
@@ -119,6 +144,7 @@ func WaitStart() {
 			}
 		}
 		GameStatus = "gaming"
+		Score = 0
 	}
 }
 
