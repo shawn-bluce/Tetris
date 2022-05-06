@@ -6,4 +6,4 @@
 game framework: [ebiten](https://github.com/hajimehoshi/ebiten)
 
 
-![screenshot](https://raw.githubusercontent.com/shawn-bluce/Tetris/master/main.go)
+![screenshot](https://raw.githubusercontent.com/shawn-bluce/Tetris/master/screenshot.jpg)
